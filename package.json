@@ -1,0 +1,25 @@
+{
+  "name": "obsidian-para-suite-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared public API contracts for the distributed Obsidian plugin workspace",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./telegram": "./src/telegram.ts",
+    "./para-core": "./src/para-core.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "obsidian": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "obsidian": "^1.8.7",
+    "typescript": "^5.8.2"
+  },
+  "license": "MIT"
+}
