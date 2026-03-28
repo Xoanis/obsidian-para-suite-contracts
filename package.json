@@ -46,6 +46,7 @@
   "scripts": {
     "check": "node ./node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
     "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.build.json",
+    "release:check": "npm pack --dry-run",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },
