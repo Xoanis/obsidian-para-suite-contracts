@@ -1,0 +1,17 @@
+# editors
+.vscode/
+.idea/
+*.iml
+
+# npm
+node_modules/
+npm-debug.log*
+
+# build outputs
+dist/
+*.tsbuildinfo
+*.tgz
+
+# OS noise
+.DS_Store
+Thumbs.db

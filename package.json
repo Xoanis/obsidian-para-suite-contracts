@@ -1,19 +1,54 @@
 {
   "name": "obsidian-para-suite-contracts",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Shared public API contracts for the distributed Obsidian plugin workspace",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./telegram": "./src/telegram.ts",
-    "./para-core": "./src/para-core.ts",
-    "./finance-intake": "./src/finance-intake.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./telegram": {
+      "types": "./dist/telegram.d.ts",
+      "import": "./dist/telegram.js"
+    },
+    "./para-core": {
+      "types": "./dist/para-core.d.ts",
+      "import": "./dist/para-core.js"
+    },
+    "./finance-intake": {
+      "types": "./dist/finance-intake.d.ts",
+      "import": "./dist/finance-intake.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "telegram": [
+        "dist/telegram.d.ts"
+      ],
+      "para-core": [
+        "dist/para-core.d.ts"
+      ],
+      "finance-intake": [
+        "dist/finance-intake.d.ts"
+      ]
+    }
   },
   "files": [
-    "src"
+    "dist",
+    "README.md"
   ],
+  "sideEffects": false,
+  "scripts": {
+    "check": "node ./node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
+    "prepack": "npm run build"
+  },
   "peerDependencies": {
     "obsidian": "*"
   },
