@@ -11,22 +11,6 @@ export type HandlerResult = {
 
 export type TelegramHandlerResult = HandlerResult;
 
-export type CommandHandler = (
-  args: string,
-  processed_before: boolean,
-) => Promise<HandlerResult>;
-
-export type TextHandler = (
-  text: string,
-  processed_before: boolean,
-) => Promise<HandlerResult>;
-
-export type FileHandler = (
-  file: TFile,
-  processed_before: boolean,
-  caption?: string,
-) => Promise<HandlerResult>;
-
 export type TelegramMessageKind =
   | "command"
   | "text"
@@ -236,54 +220,7 @@ export type TelegramFocusedInputHandler = (
   focus: InputFocusState,
 ) => Promise<HandlerResult>;
 
-export interface ITelegramBotPluginAPIv1 {
-  addCommandHandler(cmd: string, handler: CommandHandler, unit_name: string): void;
-  addTextHandler(handler: TextHandler, unit_name: string): void;
-  addFileHandler(handler: FileHandler, unit_name: string, mime_type?: string): void;
-  sendMessage(text: string, options?: SendMessageOptions): Promise<SentTelegramMessageRef>;
-  sendDocument(
-    file: TelegramOutboundFile,
-    options?: SendDocumentOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendFile(
-    file: TelegramOutboundFile,
-    options?: SendFileOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendPhoto(
-    file: TelegramOutboundFile,
-    options?: SendPhotoOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendAudio(
-    file: TelegramOutboundFile,
-    options?: SendAudioOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendVideo(
-    file: TelegramOutboundFile,
-    options?: SendVideoOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendAnimation(
-    file: TelegramOutboundFile,
-    options?: SendAnimationOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendVoice(
-    file: TelegramOutboundFile,
-    options?: SendVoiceOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendVideoNote(
-    file: TelegramOutboundFile,
-    options?: SendVideoNoteOptions,
-  ): Promise<SentTelegramMessageRef>;
-  sendMediaGroup(
-    items: TelegramMediaGroupItem[],
-  ): Promise<SentTelegramMessageRef[]>;
-  sendLocation(
-    location: TelegramLocation,
-    options?: SendLocationOptions,
-  ): Promise<SentTelegramMessageRef>;
-  disposeHandlersForUnit(unit_name: string): void;
-}
-
-export interface ITelegramBotPluginAPIv2 {
+export interface ITelegramBotPluginAPI {
   registerMessageHandler(
     handler: TelegramMessageHandler,
     unit_name: string,
@@ -361,7 +298,7 @@ export interface ITelegramBotPluginAPIv2 {
   disposeHandlersForUnit(unit_name: string): void;
 }
 
-export interface TelegramBotApiV2 {
+export interface TelegramBotApi {
   registerMessageHandler(
     handler: (
       message: TelegramMessageContext,
@@ -450,7 +387,7 @@ export interface TelegramBotApiV2 {
 }
 
 interface TelegramPluginLike {
-  getAPIv2?: () => TelegramBotApiV2;
+  getAPI?: () => TelegramBotApi;
 }
 
 interface AppWithPlugins extends App {
@@ -459,8 +396,8 @@ interface AppWithPlugins extends App {
   };
 }
 
-export function getTelegramBotApiV2(app: App): TelegramBotApiV2 | null {
+export function getTelegramBotApi(app: App): TelegramBotApi | null {
   const plugin = (app as AppWithPlugins).plugins?.plugins?.[TELEGRAM_PLUGIN_ID];
-  const api = plugin?.getAPIv2?.();
+  const api = plugin?.getAPI?.();
   return api ?? null;
 }
