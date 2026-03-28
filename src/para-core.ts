@@ -95,15 +95,43 @@ export interface TemplateContext<TFrontmatter = Record<string, unknown>> {
   frontmatter: TFrontmatter;
 }
 
-export interface NoteTypeDefinition<TFrontmatter = Record<string, unknown>> {
+export interface ValidationIssue {
+  code: string;
+  message: string;
+  severity: "error" | "warning";
+  filePath?: string;
+}
+
+export type FolderKey =
+  | "projects"
+  | "areas"
+  | "resources"
+  | "records"
+  | "unclassified"
+  | "inbox"
+  | "archive"
+  | "attachments"
+  | string;
+
+export interface BaseFrontmatter {
+  type: string;
+  status: string;
+  created: string;
+  tags?: string[];
+  area?: string | null;
+  project?: string | null;
+}
+
+export interface NoteTypeDefinition<TFrontmatter = BaseFrontmatter> {
   type: string;
   displayName: string;
-  folderKey: string;
+  folderKey: FolderKey;
   fileNameStrategy?: "title" | "date";
   requiredFields: string[];
   allowedStatuses: readonly string[];
   defaultFrontmatter: (date: string, timestamp: string) => TFrontmatter;
   template: (ctx: TemplateContext<TFrontmatter>) => string;
+  validate?: (frontmatter: Partial<TFrontmatter>) => ValidationIssue[];
 }
 
 export interface CreateNoteOptions {
@@ -131,6 +159,37 @@ export interface RegisteredParaDomain {
   noteTypeIds: string[];
 }
 
+export interface ParaCoreSettings {
+  folders: {
+    projects: string;
+    areas: string;
+    resources: string;
+    records: string;
+    unclassified: string;
+    inbox: string;
+    archive: string;
+    attachments: string;
+    templates: string;
+  };
+  daily: {
+    fileNameFormat: "YYYY-MM-DD";
+    headingTitle: string;
+  };
+  metadata: {
+    validateOnCommand: boolean;
+  };
+  rootNotes: {
+    startNotePath: string;
+    dashboardNotePath: string;
+    reviewNotePath: string;
+    guidelineNotePath: string;
+    ensureRootNotes: boolean;
+  };
+  logging: {
+    enableDebugLogging: boolean;
+  };
+}
+
 export type AttachmentScope = string;
 export type AttachmentSource = TFile | ArrayBuffer | Uint8Array;
 
@@ -148,13 +207,26 @@ export interface SavedAttachment {
   embed: string;
 }
 
-export interface IParaCoreApi {
+export interface ParaCoreApi {
   registerDomain(definition: ParaDomainRegistration): RegisteredParaDomain;
+  registerNoteType(definition: NoteTypeDefinition): void;
   registerTemplateContribution(contribution: TemplateContribution): void;
+  listTemplateContributions(target: TemplateTarget, slot?: string): TemplateContribution[];
   registerMetadataContribution(contribution: MetadataContribution): void;
+  listMetadataContributions(target: MetadataContributionTarget): MetadataContribution[];
   registerTelegramCardContribution(contribution: TelegramCardContribution): void;
-  registerTelegramHelpContribution?(contribution: TelegramHelpContribution): void;
+  listTelegramCardContributions(target: TelegramCardTarget): TelegramCardContribution[];
+  registerTelegramHelpContribution(contribution: TelegramHelpContribution): void;
+  listTelegramHelpContributions(): TelegramHelpContribution[];
   createNote(options: CreateNoteOptions): Promise<TFile>;
+  validateFile(file: TFile): Promise<ValidationIssue[]>;
+  validateVault(): Promise<ValidationIssue[]>;
+  getSettings(): ParaCoreSettings;
+  getFolderPath(key: FolderKey): string;
   getDomainRecordsPath(domainId: string): string | null;
   saveAttachment(options: SaveAttachmentOptions): Promise<SavedAttachment>;
+  ensureFolder(path: string): Promise<void>;
+  getStartNotePath(): string;
 }
+
+export type IParaCoreApi = ParaCoreApi;
