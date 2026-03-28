@@ -1,4 +1,5 @@
 import type { TFile } from "obsidian";
+import type { TelegramInlineButton, TelegramInlineKeyboard } from "./telegram";
 
 export type TemplateTarget =
   | "project"
@@ -26,13 +27,6 @@ export interface TemplateContribution {
 export type TelegramCardTarget = "project" | "area";
 
 export type MetadataContributionTarget = "project" | "area" | "resource" | "daily";
-
-export interface TelegramInlineButton {
-  text: string;
-  callbackData: string;
-}
-
-export type TelegramInlineKeyboard = TelegramInlineButton[][];
 
 export interface TelegramCardContributionContext {
   target: TelegramCardTarget;
@@ -125,6 +119,7 @@ export interface ParaDomainRegistration {
   id: string;
   displayName: string;
   recordsPath: string;
+  attachmentsPath?: string;
   noteTypes?: NoteTypeDefinition[];
 }
 
@@ -132,7 +127,25 @@ export interface RegisteredParaDomain {
   id: string;
   displayName: string;
   recordsPath: string;
+  attachmentsPath?: string;
   noteTypeIds: string[];
+}
+
+export type AttachmentScope = string;
+export type AttachmentSource = TFile | ArrayBuffer | Uint8Array;
+
+export interface SaveAttachmentOptions {
+  source: AttachmentSource;
+  fileName?: string;
+  scope: AttachmentScope;
+  subdirs?: string[];
+  placementDate?: string | Date;
+}
+
+export interface SavedAttachment {
+  file: TFile;
+  path: string;
+  embed: string;
 }
 
 export interface IParaCoreApi {
@@ -143,4 +156,5 @@ export interface IParaCoreApi {
   registerTelegramHelpContribution?(contribution: TelegramHelpContribution): void;
   createNote(options: CreateNoteOptions): Promise<TFile>;
   getDomainRecordsPath(domainId: string): string | null;
+  saveAttachment(options: SaveAttachmentOptions): Promise<SavedAttachment>;
 }
