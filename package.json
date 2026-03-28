@@ -8,7 +8,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./telegram": "./src/telegram.ts",
-    "./para-core": "./src/para-core.ts"
+    "./para-core": "./src/para-core.ts",
+    "./finance-intake": "./src/finance-intake.ts"
   },
   "files": [
     "src"

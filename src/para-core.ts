@@ -57,6 +57,19 @@ export interface TelegramCardContribution {
     | undefined;
 }
 
+export interface TelegramHelpContributionContext {
+  command: "help";
+}
+
+export interface TelegramHelpContribution {
+  id: string;
+  domainId: string;
+  order?: number;
+  renderHelp: (
+    context: TelegramHelpContributionContext,
+  ) => Promise<string | string[] | null | undefined> | string | string[] | null | undefined;
+}
+
 export interface MetadataContributionContext {
   target: MetadataContributionTarget;
   path?: string;
@@ -127,6 +140,7 @@ export interface IParaCoreApi {
   registerTemplateContribution(contribution: TemplateContribution): void;
   registerMetadataContribution(contribution: MetadataContribution): void;
   registerTelegramCardContribution(contribution: TelegramCardContribution): void;
+  registerTelegramHelpContribution?(contribution: TelegramHelpContribution): void;
   createNote(options: CreateNoteOptions): Promise<TFile>;
   getDomainRecordsPath(domainId: string): string | null;
 }
