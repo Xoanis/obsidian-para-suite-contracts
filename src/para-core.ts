@@ -209,7 +209,6 @@ export interface SavedAttachment {
 
 export interface ParaCoreApi {
   registerDomain(definition: ParaDomainRegistration): RegisteredParaDomain;
-  registerNoteType(definition: NoteTypeDefinition): void;
   registerTemplateContribution(contribution: TemplateContribution): void;
   listTemplateContributions(target: TemplateTarget, slot?: string): TemplateContribution[];
   registerMetadataContribution(contribution: MetadataContribution): void;
