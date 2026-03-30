@@ -1,6 +1,6 @@
 {
   "name": "obsidian-para-suite-contracts",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": false,
   "description": "Shared public API contracts for the distributed Obsidian plugin workspace",
   "type": "module",
