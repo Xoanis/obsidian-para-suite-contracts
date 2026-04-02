@@ -102,6 +102,15 @@ export interface ValidationIssue {
   filePath?: string;
 }
 
+export type ParaLogLevel = "debug" | "info" | "warn" | "error";
+
+export interface ParaLogger {
+  debug(message: string, ...args: unknown[]): void;
+  info(message: string, ...args: unknown[]): void;
+  warn(message: string, ...args: unknown[]): void;
+  error(message: string, ...args: unknown[]): void;
+}
+
 export type FolderKey =
   | "projects"
   | "areas"
@@ -187,6 +196,8 @@ export interface ParaCoreSettings {
   };
   logging: {
     enableDebugLogging: boolean;
+    enableFileLogging: boolean;
+    runtimeLogPath: string;
   };
 }
 
@@ -226,6 +237,8 @@ export interface ParaCoreApi {
   saveAttachment(options: SaveAttachmentOptions): Promise<SavedAttachment>;
   ensureFolder(path: string): Promise<void>;
   getStartNotePath(): string;
+  createLogger(scope: string): ParaLogger;
+  getRuntimeLogPath(): string;
 }
 
 export type IParaCoreApi = ParaCoreApi;
