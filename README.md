@@ -6,6 +6,7 @@ Current scope:
 
 - Telegram plugin public API contracts
 - PARA Core consumer-facing public API contracts
+- Email provider consumer-facing public API contracts
 
 Current goal:
 
@@ -16,6 +17,7 @@ Current goal:
 ## Current Consumers
 
 - [obsidian-telegram-bot](C:/Users/petro/OneDrive/Документы/codex_projects/obsidian/obsidian-telegram-bot)
+- [obsidian-email-provider](C:/Users/petro/OneDrive/Документы/codex_projects/obsidian/obsidian-email-provider)
 - [obsidian-expense-manager](C:/Users/petro/OneDrive/Документы/codex_projects/obsidian/obsidian-expense-manager)
 
 ## Package Shape
@@ -27,6 +29,7 @@ Current goal:
   - `obsidian-para-suite-contracts/telegram`
   - `obsidian-para-suite-contracts/para-core`
   - `obsidian-para-suite-contracts/finance-intake`
+  - `obsidian-para-suite-contracts/email-provider`
 
 ## Development
 
